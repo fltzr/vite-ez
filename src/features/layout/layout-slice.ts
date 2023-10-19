@@ -1,20 +1,20 @@
 import { RootState } from "@/app/store";
 import { BreadcrumbGroupProps } from "@cloudscape-design/components/breadcrumb-group";
 import { SideNavigationProps } from "@cloudscape-design/components/side-navigation";
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type LayoutState = {
 	activeHref?: string;
 	pageTitle?: string;
 	breadcrumbs?: BreadcrumbGroupProps.Item[];
-	navigationItems?: SideNavigationProps["items"];
+	navigationItems?: SideNavigationProps.Item[];
 	isNavigationOpen: boolean;
 	isNavigationHidden: boolean;
 	isToolsOpen: boolean;
 	isToolsHidden: boolean;
 };
 
-export const initialState: LayoutState = {
+const initialState: LayoutState = {
 	activeHref: undefined,
 	pageTitle: undefined,
 	breadcrumbs: [],
@@ -29,28 +29,31 @@ const layoutSlice = createSlice({
 	name: "layout",
 	initialState,
 	reducers: {
-		setActiveHref: (state, action) => {
+		setActiveHref: (state, action: PayloadAction<string>) => {
 			state.activeHref = action.payload;
 		},
-		setPageTitle: (state, action) => {
+		setPageTitle: (state, action: PayloadAction<string>) => {
 			state.pageTitle = action.payload;
 		},
-		setBreadcrumbs: (state, action) => {
+		setBreadcrumbs: (
+			state,
+			action: PayloadAction<BreadcrumbGroupProps.Item[]>,
+		) => {
 			state.breadcrumbs = action.payload;
 		},
 		setNavigationItems: (state, action) => {
 			state.navigationItems = action.payload;
 		},
-		setNavigationOpen: (state, action) => {
+		setNavigationOpen: (state, action: PayloadAction<boolean>) => {
 			state.isNavigationOpen = action.payload;
 		},
-		setNavigationHidden: (state, action) => {
+		setNavigationHidden: (state, action: PayloadAction<boolean>) => {
 			state.isNavigationHidden = action.payload;
 		},
-		setToolsOpen: (state, action) => {
+		setToolsOpen: (state, action: PayloadAction<boolean>) => {
 			state.isToolsOpen = action.payload;
 		},
-		setToolsHidden: (state, action) => {
+		setToolsHidden: (state, action: PayloadAction<boolean>) => {
 			state.isToolsHidden = action.payload;
 		},
 	},
@@ -69,15 +72,15 @@ export const {
 
 export const selectActiveHref = (state: RootState) => state.layout.activeHref;
 
-export const selectIsNavigationOpen = (state: RootState) =>
-	state.layout.isNavigationOpen;
-
-export const selectisNavigationHidden = (state: RootState) =>
+export const selectNavigationHidden = (state: RootState) =>
 	state.layout.isNavigationHidden;
 
-export const selectIsToolsOpen = (state: RootState) => state.layout.isToolsOpen;
+export const selectNavigationOpen = (state: RootState) =>
+	state.layout.isNavigationOpen;
 
-export const selectIsToolsHidden = (state: RootState) =>
+export const selectToolsHidden = (state: RootState) =>
 	state.layout.isToolsHidden;
 
-export default layoutSlice.reducer;
+export const selectToolsOpen = (state: RootState) => state.layout.isToolsOpen;
+
+export const layoutReducer = layoutSlice.reducer;

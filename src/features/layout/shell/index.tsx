@@ -2,31 +2,32 @@ import { PropsWithChildren } from "react";
 import AppLayout from "@cloudscape-design/components/app-layout";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import {
-	selectIsNavigationOpen,
-	selectIsToolsHidden,
-	selectIsToolsOpen,
-	selectisNavigationHidden,
+	selectNavigationHidden,
+	selectNavigationOpen,
+	selectToolsHidden,
+	selectToolsOpen,
 	setNavigationOpen,
 	setToolsOpen,
 } from "../layout-slice";
 
 export const Shell = ({ children }: PropsWithChildren) => {
-	const navigationOpen = useAppSelector(selectIsNavigationOpen);
-	const navigationHidden = useAppSelector(selectisNavigationHidden);
-	const toolsOpen = useAppSelector(selectIsToolsOpen);
-	const toolsHidden = useAppSelector(selectIsToolsHidden);
-
 	const dispatch = useAppDispatch();
+
+	const navigationHidden = useAppSelector(selectNavigationHidden);
+	const navigationOpen = useAppSelector(selectNavigationOpen);
+
+	const toolsHidden = useAppSelector(selectToolsHidden);
+	const toolsOpen = useAppSelector(selectToolsOpen);
 
 	return (
 		<AppLayout
 			content={children}
+			navigationHide={navigationHidden}
 			navigationOpen={navigationOpen}
 			onNavigationChange={() => dispatch(setNavigationOpen(!navigationOpen))}
-			navigationHide={navigationHidden}
+			toolsHide={toolsHidden}
 			toolsOpen={toolsOpen}
 			onToolsChange={() => dispatch(setToolsOpen(!toolsOpen))}
-			toolsHide={toolsHidden}
 		/>
 	);
 };
