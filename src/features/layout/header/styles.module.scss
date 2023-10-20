@@ -1,0 +1,13 @@
+.header {
+  & > * {
+    border-bottom: 1px solid #545b64;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  * {
+    height: 40px;
+  }
+}

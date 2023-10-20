@@ -1,10 +1,10 @@
-import { Shell } from "@/features/layout";
+import { Layout } from "@/features/layout";
 import { App } from "./app";
 
 export const AppContainer = () => {
 	return (
-		<Shell>
+		<Layout>
 			<App />
-		</Shell>
+		</Layout>
 	);
 };
