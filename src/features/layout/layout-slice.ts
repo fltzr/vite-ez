@@ -8,10 +8,10 @@ export type LayoutState = {
 	pageTitle?: string;
 	breadcrumbs?: BreadcrumbGroupProps.Item[];
 	navigationItems?: SideNavigationProps.Item[];
-	isNavigationOpen: boolean;
-	isNavigationHidden: boolean;
-	isToolsOpen: boolean;
-	isToolsHidden: boolean;
+	navigationOpen: boolean;
+	navigationHidden: boolean;
+	toolsOpen: boolean;
+	toolsHidden: boolean;
 };
 
 const initialState: LayoutState = {
@@ -19,10 +19,10 @@ const initialState: LayoutState = {
 	pageTitle: undefined,
 	breadcrumbs: [],
 	navigationItems: [],
-	isNavigationOpen: false,
-	isNavigationHidden: false,
-	isToolsOpen: false,
-	isToolsHidden: false,
+	navigationOpen: false,
+	navigationHidden: false,
+	toolsOpen: false,
+	toolsHidden: false,
 };
 
 const layoutSlice = createSlice({
@@ -45,16 +45,16 @@ const layoutSlice = createSlice({
 			state.navigationItems = action.payload;
 		},
 		setNavigationOpen: (state, action: PayloadAction<boolean>) => {
-			state.isNavigationOpen = action.payload;
+			state.navigationOpen = action.payload;
 		},
 		setNavigationHidden: (state, action: PayloadAction<boolean>) => {
-			state.isNavigationHidden = action.payload;
+			state.navigationHidden = action.payload;
 		},
 		setToolsOpen: (state, action: PayloadAction<boolean>) => {
-			state.isToolsOpen = action.payload;
+			state.toolsOpen = action.payload;
 		},
 		setToolsHidden: (state, action: PayloadAction<boolean>) => {
-			state.isToolsHidden = action.payload;
+			state.toolsHidden = action.payload;
 		},
 	},
 });
@@ -73,14 +73,14 @@ export const {
 export const selectActiveHref = (state: RootState) => state.layout.activeHref;
 
 export const selectNavigationHidden = (state: RootState) =>
-	state.layout.isNavigationHidden;
+	state.layout.navigationHidden;
 
 export const selectNavigationOpen = (state: RootState) =>
-	state.layout.isNavigationOpen;
+	state.layout.navigationOpen;
 
 export const selectToolsHidden = (state: RootState) =>
-	state.layout.isToolsHidden;
+	state.layout.toolsHidden;
 
-export const selectToolsOpen = (state: RootState) => state.layout.isToolsOpen;
+export const selectToolsOpen = (state: RootState) => state.layout.toolsOpen;
 
 export const layoutReducer = layoutSlice.reducer;

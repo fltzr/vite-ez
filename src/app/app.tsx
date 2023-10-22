@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ColumnLayout,
   Container,
@@ -32,16 +33,32 @@ export const App = () => {
         <SpaceBetween size='xl'>
           <Container>
             <ColumnLayout columns={2} variant='text-grid'>
-              Navigation Hidden: {navigationHidden ? 'true' : 'false'}
-              Navigation Open: {navigationOpen ? 'true' : 'false'}
-              Tools Hidden: {toolsHidden ? 'true' : 'false'}
-              Tools Open: {toolsOpen ? 'true' : 'false'}
+              <div>
+                <Box variant='awsui-key-label'>Navgation Hidden</Box>
+                <div>{navigationHidden ? 'true' : 'false'}</div>
+              </div>
+
+              <div>
+                <Box variant='awsui-key-label'>Navigation Open</Box>
+                <div>{navigationOpen ? 'true' : 'false'}</div>
+              </div>
+
+              <div>
+                <Box variant='awsui-key-label'>Toold Hidden</Box>
+                <div>{toolsHidden ? 'true' : 'false'}</div>
+              </div>
+
+              <div>
+                <Box variant='awsui-key-label'>Tools Open</Box>
+                <div>{toolsOpen ? 'true' : 'false'}</div>
+              </div>
             </ColumnLayout>
           </Container>
           <Container>
             <SpaceBetween size='l' direction='horizontal'>
               <Button
                 variant='primary'
+                disabled={navigationHidden}
                 onClick={() => dispatch(setNavigationOpen(!navigationOpen))}
               >
                 Toggle Navigation
@@ -52,7 +69,11 @@ export const App = () => {
               >
                 Hide Navigation
               </Button>
-              <Button variant='primary' onClick={() => dispatch(setToolsOpen(!toolsOpen))}>
+              <Button
+                variant='primary'
+                disabled={toolsHidden}
+                onClick={() => dispatch(setToolsOpen(!toolsOpen))}
+              >
                 Toggle Tools
               </Button>
               <Button variant='primary' onClick={() => dispatch(setToolsHidden(!toolsHidden))}>
