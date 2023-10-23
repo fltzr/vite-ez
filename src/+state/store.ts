@@ -1,14 +1,16 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import { layoutReducer } from '@/features/layout/layout-slice';
+import { listenerMiddleware } from './listener-middleware';
 
 export const store = configureStore({
   reducer: {
     layout: layoutReducer,
   },
-	middleware(getDefaultMiddleware) {
-		return getDefaultMiddleware().concat(logger);
-	}
+  devTools: !import.meta.env.PROD,
+  middleware(getDefaultMiddleware) {
+    return getDefaultMiddleware().prepend([listenerMiddleware.middleware, logger]);
+  },
 });
 
 export type AppDispatch = typeof store.dispatch;

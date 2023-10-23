@@ -1,0 +1,1 @@
+export { save, load, remove } from './local-storage';

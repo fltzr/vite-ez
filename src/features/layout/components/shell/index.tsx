@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import AppLayout from '@cloudscape-design/components/app-layout';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/+state/hooks';
 import {
   selectNavigationHidden,
   selectNavigationOpen,
@@ -8,7 +8,7 @@ import {
   selectToolsOpen,
   setNavigationOpen,
   setToolsOpen,
-} from '../layout-slice';
+} from '@/features/layout/layout-slice';
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch();
