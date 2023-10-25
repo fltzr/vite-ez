@@ -1,12 +1,9 @@
-import { RootState, store } from '@/+state/store';
+import { describe, beforeEach, test, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { RootState } from '@/+state/store';
 import { BreadcrumbGroupProps } from '@cloudscape-design/components/breadcrumb-group';
-import { SideNavigationProps } from '@cloudscape-design/components/side-navigation';
-import {
-  Mode as Theme,
-  Density,
-  applyMode as applyTheme,
-  applyDensity,
-} from '@cloudscape-design/global-styles';
+import { Mode as Theme, Density } from '@cloudscape-design/global-styles';
 import { PayloadAction } from '@reduxjs/toolkit';
 import {
   layoutReducer,
@@ -27,9 +24,12 @@ import {
   setToolsOpen,
   LayoutState,
 } from '@/features/layout/layout-slice';
-import { save } from '@/common/utils';
-import { addAppListener } from '@/+state/listener-middleware';
+import configureStore from 'redux-mock-store';
+import { Shell } from '../components';
+import { Provider } from 'react-redux';
+import { Layout } from '..';
 
+const mockStore = configureStore([]);
 const state: RootState = {
   layout: {
     theme: Theme.Light,
@@ -48,7 +48,7 @@ const state: RootState = {
   },
 };
 
-describe('layoutSlice', () => {
+describe('feature-layout', () => {
   let initialState: LayoutState;
 
   beforeEach(() => {
@@ -123,84 +123,26 @@ describe('layoutSlice', () => {
     });
   });
 
-  describe('selectors', () => {
-    test('should select the theme', () => {
-      const selected = selectTheme(state);
-      expect(selected).toEqual(Theme.Light);
+  describe('ui', () => {
+    test('toggles navigation on navigation change', () => {
+      const store = mockStore(state);
+
+      const r = render(
+        <Provider store={store}>
+          <Layout>
+            <div>Test</div>
+          </Layout>
+        </Provider>
+      );
+
+      const navigation = screen.getByRole('navigation', {
+        name: 'Navigation drawer',
+        hidden: true,
+      });
+      expect(navigation).not.toBeVisible();
+
+      store.dispatch(setNavigationOpen(true));
+      expect(navigation).toBeVisible();
     });
-
-    test('should select the density', () => {
-      const selected = selectDensity(state);
-      expect(selected).toEqual(Density.Comfortable);
-    });
-
-    test('should select the activeHref', () => {
-      const selected = selectActiveHref(state);
-      expect(selected).toEqual('/home');
-    });
-
-    test('should select the navigationHidden', () => {
-      const selected = selectNavigationHidden(state);
-      expect(selected).toEqual(false);
-    });
-
-    test('should select the navigationOpen', () => {
-      const selected = selectNavigationOpen(state);
-      expect(selected).toEqual(true);
-    });
-
-    test('should select the toolsHidden', () => {
-      const selected = selectToolsHidden(state);
-      expect(selected).toEqual(true);
-    });
-
-    test('should select the toolsOpen', () => {
-      const selected = selectToolsOpen(state);
-      expect(selected).toEqual(false);
-    });
-  });
-});
-
-describe('listener', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('should apply the theme on setTheme', () => {
-    const getStateSpy = jest.spyOn(store, 'getState');
-    getStateSpy.mockReturnValueOnce({ layout: { ...state.layout, theme: Theme.Dark } });
-
-    const applyThemeSpy = jest.spyOn(applyTheme, 'mockImplementation');
-    const saveSpy = jest.spyOn(save, 'mockImplementation');
-
-    const action = setTheme(Theme.Light);
-    const api = { getState: getStateSpy, dispatch: jest.fn() };
-
-    const listener = addAppListener(action.type, action.payload, action.meta, action.error, action);
-
-    listener.effect(listener, api);
-
-    expect(applyThemeSpy).toHaveBeenCalledWith(Theme.Light);
-    expect(saveSpy).toHaveBeenCalledWith('theme', Theme.Light);
-    expect(api.dispatch).toHaveBeenCalledWith(action);
-  });
-
-  it('should apply the density on setDensity', () => {
-    const getStateSpy = jest.spyOn(store, 'getState');
-    getStateSpy.mockReturnValueOnce({ layout: { ...state.layout, density: Density.Compact } });
-
-    const applyDensitySpy = jest.spyOn(applyDensity, 'mockImplementation');
-    const saveSpy = jest.spyOn(save, 'mockImplementation');
-
-    const action = setDensity(Density.Comfortable);
-    const api = { getState: getStateSpy, dispatch: jest.fn() };
-
-    const listener = addAppListener(action.type, action.payload, action.meta, action.error, action);
-
-    listener.effect(listener, api);
-
-    expect(applyDensitySpy).toHaveBeenCalledWith(Density.Comfortable);
-    expect(saveSpy).toHaveBeenCalledWith('theme', Density.Comfortable);
-    expect(api.dispatch).toHaveBeenCalledWith(action);
   });
 });

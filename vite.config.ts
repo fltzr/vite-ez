@@ -1,8 +1,10 @@
-import { defineConfig } from 'vitest/config';
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
+
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsConfigPaths from 'vite-tsconfig-paths';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsConfigPaths()],
   server: {
@@ -15,7 +17,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['src/setupTests', 'src/tests/setup-tests.ts'],
+    setupFiles: './src/tests/setup.ts',
     mockReset: true,
+    css: true,
   },
 });
